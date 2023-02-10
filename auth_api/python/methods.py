@@ -1,3 +1,4 @@
+import json
 import jwt
 import hashlib
 import mysql.connector
@@ -52,8 +53,9 @@ class Token:
 class Restricted:
 
     def access_data(self, authorization):
-        #regresar 'you are under protected data' si hay token o el token coincide con algo, no se aun.
+        #regresar 'you are under protected data' si hay token con el rol definido y la firma coincide con el secret.
         #caso contrario yo creo que devuelve igual un 403
-
-
-        return 'test'
+        #return authorization[7:]
+        token_entrada=jwt.decode(authorization[7:], key='my2w7wjd7yXF64FIADfJxNs1oupTGAuW', algorithms=['HS256', ])
+        #token_dicc=json.loads(token_entrada)
+        return token_entrada['role']
