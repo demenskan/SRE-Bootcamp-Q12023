@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
+from flask import make_response
 from methods import Token, Restricted
 
 app = Flask(__name__)
@@ -25,10 +26,14 @@ def url_health():
 def url_login():
     username = request.form['username']
     password = request.form['password']
-    res = {
-        "data": login.generate_token(username, password)
-    }
-    return jsonify(res)
+    result = login.generate_token(username, password)
+    if result != "X(":
+        res = {
+            "data": result
+        }
+        return jsonify(res)
+    else:
+        return make_response("<h1>Forbidden</h1>", 403)
 
 
 # # e.g. http://127.0.0.1:8000/protected
